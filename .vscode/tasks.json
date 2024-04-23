@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks":
+    [
+        {
+            "label": "build",
+            "type": "shell",
+            "dependsOn" : ["run"]
+        },
+        {
+            "label": "compile",
+            "type": "shell",
+            "command": "g++ *.cpp -Isrc/include -Iinclude -o bin/main -Lsrc/lib -lsfml-graphics -lsfml-window -lsfml-system",
+			"presentation": 
+            {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "dedicated",
+				"showReuseMessage": false,
+				"clear": true
+			}
+            //,"dependsOn": ["build"]
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            // "command": "D:/Krishanth/Dev/C++/Projects/Trash/bin/main.exe",
+            "command": "start",
+            "args": ["./run.bat"],
+            "group": "test",
+			"dependsOn" : ["compile"],
+			"presentation":
+            {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "dedicated",
+				"showReuseMessage": false,
+				"clear": true,
+			}, 
+        },
+       
+    ]
+}
