@@ -1,11 +1,11 @@
 #include "cell.h"
 
-Cell::Cell()
+Cell::Cell() 
 {
     SetState(0);
     SetNewState(0);
-    setFillColor(sf::Color::Black);
-    setOutlineColor(sf::Color::White);
+    setFillColor(darkGray);
+    setOutlineColor(lightGray);
     setOutlineThickness(1);
 }
 

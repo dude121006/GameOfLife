@@ -29,6 +29,13 @@ std::vector<std::vector<Cell>> Board::CreateBoard(int numCells, int windowDimens
     return board;
 }
 
+
+void Board::DestroyBoard()
+{
+    board = {{}};
+}
+
+
 // updates board
 void Board::UpdateBoard()
 {
@@ -38,13 +45,13 @@ void Board::UpdateBoard()
         {
             if (board[x][y].GetState())
             {
-                board[x][y].setFillColor(sf::Color::White);
-                board[x][y].setOutlineColor(sf::Color::Black);
+                board[x][y].setFillColor(board[x][y].white);
+                board[x][y].setOutlineColor(board[x][y].lightGray);
             }
             else
             {
-                board[x][y].setFillColor(sf::Color::Black);
-                board[x][y].setOutlineColor(sf::Color::White);
+                board[x][y].setFillColor(board[x][y].darkGray);
+                board[x][y].setOutlineColor(board[x][y].lightGray);
             }
         }
     }

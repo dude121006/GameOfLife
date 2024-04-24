@@ -28,11 +28,11 @@ int main()
     {
         // time stuff
         timeElapsed = clock.getElapsedTime().asSeconds();
-        if (timeElapsed >= 1.0f && isRunning) {
+        if (timeElapsed >= 0.5f && isRunning)
+        {
             board.EvolveBoard();
             clock.restart();
         }
-
 
         // event stuff
         sf::Event event;
@@ -41,7 +41,7 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            
+
             else if (event.key.code == sf::Keyboard::Space)
             {
                 isRunning = false;
@@ -69,6 +69,26 @@ int main()
                     Log("state inverted")
                 }
             }
+            // handle window resizing
+            // else if (event.type == sf::Event::Resized)
+            // {
+
+            //     sf::Vector2u newSize(event.size.width, event.size.height);
+
+            //     // Make sure the window remains square
+            //     if (newSize.x != newSize.y)
+            //     {
+            //         // Choose the smallest dimension as the new size
+            //         unsigned int newSizeMin = std::min(newSize.x, newSize.y);
+            //         newSize.x = newSizeMin;
+            //         newSize.y = newSizeMin;
+
+            //         // Resize the window
+            //         window.setSize(newSize);
+            //     }
+            //     board.DestroyBoard();
+            //     board.CreateBoard(dimension, window.getSize().x);
+            // }
         }
 
         window.clear();

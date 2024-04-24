@@ -20,6 +20,7 @@ public:
     void Test();
 
     std::vector<std::vector<Cell>> CreateBoard(int numCells, int windowDimension);
+    void DestroyBoard();
     void UpdateBoard();
     void ClearBoard();
     void UpdateCellStates();
