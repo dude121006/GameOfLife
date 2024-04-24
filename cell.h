@@ -9,6 +9,8 @@ private:
     sf::Vector2i coords;
 
 public:
+    Cell();
+
     using sf::RectangleShape::RectangleShape;
     bool GetState();
     bool GetNewState();

@@ -11,21 +11,16 @@ Board::Board(int numCells, int windowDimension)
 std::vector<std::vector<Cell>> Board::CreateBoard(int numCells, int windowDimension)
 {
     board = std::vector<std::vector<Cell>>(numCells, std::vector<Cell>(numCells));
+    cellLength = windowDimension / numCells;
 
     sf::Vector2f currentPos = sf::Vector2f(0, 0);
+    sf::Vector2f cellSize = sf::Vector2f(cellLength, cellLength);
 
     for (int x = 0; x < numCells; x++)
     {
         for (int y = 0; y < numCells; y++)
         {
-            cellLength = windowDimension / numCells;
-            sf::Vector2f cellSize = sf::Vector2f(cellLength, cellLength);
-            board[x][y].SetState(0);
-            board[x][y].SetNewState(0);
             board[x][y].setSize(cellSize);
-            board[x][y].setFillColor(sf::Color::Black);
-            board[x][y].setOutlineColor(sf::Color::White);
-            board[x][y].setOutlineThickness(1);
             board[x][y].setPosition(sf::Vector2f(cellSize.x * x, cellSize.y * y));
         }
     }
@@ -243,4 +238,17 @@ void Board::PrintStates()
             Log(currentCell.GetState() << ", " << count)
         }
     }
+}
+
+
+void Board::ClearBoard()
+{
+    for (int x = 0; x < boardLength; x++)
+    {
+        for (int y = 0; y < boardLength; y++)
+        {
+            board[x][y].SetState(0);
+        }
+    }
+    UpdateBoard();
 }

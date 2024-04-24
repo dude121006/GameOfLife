@@ -12,7 +12,7 @@ int main()
 
     // game stuff
     Board board(dimension, window.getSize().x);
-    bool isStarted = false;
+    bool isRunning = false;
 
     sf::Clock clock;
     float timeElapsed;
@@ -21,11 +21,6 @@ int main()
     sf::Vector2f worldPos;
 
     //* ----------------------------------------------------------------------------------
-    // board.GetCellWithCoords(sf::Vector2i(1, 0))->SetState(1);
-    // board.GetCellWithCoords(sf::Vector2i(1, 1))->SetState(1);
-    // board.GetCellWithCoords(sf::Vector2i(2, 0))->SetState(1);
-    board.UpdateBoard();
-
     //* ----------------------------------------------------------------------------------
 
     // main game loop
@@ -33,7 +28,7 @@ int main()
     {
         // time stuff
         timeElapsed = clock.getElapsedTime().asSeconds();
-        if (timeElapsed >= 1.0f && isStarted) {
+        if (timeElapsed >= 1.0f && isRunning) {
             board.EvolveBoard();
             clock.restart();
         }
@@ -48,12 +43,15 @@ int main()
                 window.close();
             
             else if (event.key.code == sf::Keyboard::Space)
-                board.EvolveBoard();
+            {
+                isRunning = false;
+                board.ClearBoard();
+            }
 
             else if (event.key.code == sf::Keyboard::Enter)
             {
                 clock.restart();
-                isStarted = true;
+                isRunning = true;
             }
 
             else if (event.type == sf::Event::MouseMoved)
@@ -64,7 +62,7 @@ int main()
 
             else if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (!isStarted)
+                if (!isRunning)
                 {
                     board.GetCellWithMousePos(worldPos)->InvertState();
                     board.UpdateBoard();

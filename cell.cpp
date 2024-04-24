@@ -1,5 +1,13 @@
 #include "cell.h"
 
+Cell::Cell()
+{
+    SetState(0);
+    SetNewState(0);
+    setFillColor(sf::Color::Black);
+    setOutlineColor(sf::Color::White);
+    setOutlineThickness(1);
+}
 
 bool Cell::GetState()
 {

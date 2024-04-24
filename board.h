@@ -21,6 +21,7 @@ public:
 
     std::vector<std::vector<Cell>> CreateBoard(int numCells, int windowDimension);
     void UpdateBoard();
+    void ClearBoard();
     void UpdateCellStates();
     void Render(sf::RenderWindow& window);
     void PrintStates();
