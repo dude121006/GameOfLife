@@ -7,6 +7,7 @@ Board::Board(int numCells, int windowDimension)
     srand(time(nullptr));
 }
 
+// creates a board and assings the default value to the cells
 std::vector<std::vector<Cell>> Board::CreateBoard(int numCells, int windowDimension)
 {
     board = std::vector<std::vector<Cell>>(numCells, std::vector<Cell>(numCells));
@@ -17,8 +18,10 @@ std::vector<std::vector<Cell>> Board::CreateBoard(int numCells, int windowDimens
     {
         for (int y = 0; y < numCells; y++)
         {
-            sf::Vector2f cellSize = sf::Vector2f(windowDimension / numCells, windowDimension / numCells);
+            cellLength = windowDimension / numCells;
+            sf::Vector2f cellSize = sf::Vector2f(cellLength, cellLength);
             board[x][y].SetState(0);
+            board[x][y].SetNewState(0);
             board[x][y].setSize(cellSize);
             board[x][y].setFillColor(sf::Color::Black);
             board[x][y].setOutlineColor(sf::Color::White);
@@ -64,34 +67,10 @@ void Board::Render(sf::RenderWindow &window)
     }
 }
 
+// returns a random int between [0, maxValue)
 int Board::getRandomInt(int maxValue)
 {
     return rand() % maxValue;
-}
-
-bool Board::IsEdge(sf::Vector2i coords)
-{
-    if (IsCorner(coords))
-        return false;
-    else if (coords.x == 0 || coords.x == boardLength || coords.y == 0 || coords.y == boardLength)
-        return true;
-    return false;
-}
-
-bool Board::IsCorner(sf::Vector2i coords)
-{
-    if (coords == sf::Vector2i(0, 0) || coords == sf::Vector2i(0, boardLength) || coords == sf::Vector2i(boardLength, 0) || coords == sf::Vector2i(boardLength, boardLength))
-        return true;
-    else
-        return false;
-}
-
-bool Board::IsNotEdgeOrCorner(sf::Vector2i coords)
-{
-    if (IsEdge(coords) || IsCorner(coords))
-        return false;
-    else
-        return true;
 }
 
 // return an array of pointers to nearby cells of a given cell coords
@@ -148,6 +127,16 @@ Cell *Board::GetCellWithCoords(sf::Vector2i cellCoords)
     return &board[cellCoords.x][cellCoords.y];
 }
 
+// return a pointer to a cell of a given world coord
+Cell* Board::GetCellWithMousePos(sf::Vector2f mousePosition)
+{
+    sf::Vector2i finalCellCoords = sf::Vector2i(0, 0);
+    finalCellCoords.x = std::floor(mousePosition.x / cellLength);
+    finalCellCoords.y = std::floor(mousePosition.y / cellLength);
+
+    return GetCellWithCoords(finalCellCoords);
+}
+
 // makes a random cell alive at game start
 void Board::RandomStarterCell()
 {
@@ -159,4 +148,99 @@ void Board::RandomStarterCell()
 void Board::Test()
 {
     Log(board[3][3].GetState())
+}
+
+// returns a count of alive nearby cells
+int Board::CountNeighboringCells(sf::Vector2i cellCoords)
+{
+    int count = 0;
+    std::vector<Cell*> nearbyCells = GetNeighboringCells(cellCoords);
+
+    for(const auto& cell : nearbyCells)
+    {
+        count += cell->GetState();
+    }
+    return count;
+}
+
+// applies the rules to the cells
+void Board::EvolveBoard()
+{
+    // Log("evolve")
+    sf::Vector2i currentCoords = sf::Vector2i(0, 0);
+    int count = 0;
+    
+    for (int x = 0; x < boardLength; x++)
+    {
+        for (int y = 0; y < boardLength; y++)
+        {
+            currentCoords = sf::Vector2i(x, y);
+            count = CountNeighboringCells(currentCoords);
+            Cell* currentCell = GetCellWithCoords(currentCoords);
+
+            if (currentCell->isAlive())
+            {
+                // Log("L1")
+                //underpopulation
+                if (count < 2) {
+                    currentCell->SetNewState(0);
+                }
+                //survival
+                else if (count == 2 || count == 3) {
+                    currentCell->SetNewState(1);
+                }
+                //overcrowding
+                else if (count > 3) {
+                    currentCell->SetNewState(0);
+                }
+            }
+            else if (currentCell->isDead())
+            {
+                // Log("L2")
+                //reproduction
+                if (count == 3)
+                {
+                    currentCell->SetNewState(1);
+                }
+            }
+        }
+    }
+    // PrintStates();
+    // Log("/n/n/n")
+    UpdateCellStates();
+    // PrintStates();
+    UpdateBoard();
+
+}
+
+// updates the current state of cells to newState
+void Board::UpdateCellStates()
+{
+    for (int x = 0; x < boardLength; x++)
+    {
+        for (int y = 0; y < boardLength; y++)
+        {
+            Cell* currentCell = GetCellWithCoords(sf::Vector2i(x, y));
+            currentCell->SetState(currentCell->GetNewState());
+            currentCell->SetNewState(0);
+        }
+    }
+}
+
+void Board::PrintStates()
+{
+    Cell* currentCell;
+    sf::Vector2i currentCoords = sf::Vector2i(0, 0);
+    int count = 0;
+    for (int x = 0; x < boardLength; x++)
+    {
+        for (int y = 0; y < boardLength; y++)
+        {
+            currentCoords = sf::Vector2i(x, y);
+            count = CountNeighboringCells(currentCoords);
+            Cell currentCell = *GetCellWithCoords(currentCoords);
+
+            Log(currentCell.GetState() << ", " << count)
+        }
+    }
 }

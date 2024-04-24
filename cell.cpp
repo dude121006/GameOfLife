@@ -6,9 +6,19 @@ bool Cell::GetState()
     return state;
 }
 
-void Cell::SetState(bool newState)
+bool Cell::GetNewState()
 {
-    state = newState;
+    return newState;
+}
+
+void Cell::SetState(bool targetState)
+{
+    state = targetState;
+}
+
+void Cell::SetNewState(bool targetState)
+{
+    newState = targetState;
 }
 
 void Cell::InvertState()
@@ -24,4 +34,14 @@ sf::Vector2i Cell::GetCoords()
 void Cell::SetCoords(sf::Vector2i newCoords)
 {
     coords = newCoords;
+}
+
+bool Cell::isAlive()
+{
+    return true ? state == 1 : false;
+}
+
+bool Cell::isDead()
+{
+    return true ? state == 0 : false;
 }
