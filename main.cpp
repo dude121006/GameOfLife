@@ -1,5 +1,7 @@
+
 #include <iostream>
-#include "SFML/Graphics.hpp"
+#include "src/include/SFML/Graphics.hpp"
+//#include "Graphics.hpp"
 #include "board.h"
 
 #define Log(x) std::cout << x << std::endl;
@@ -20,7 +22,7 @@ int main()
 
     sf::Vector2f worldPos;
 
-    //* ----------------------------------------------------------------------------------
+  //* ----------------------------------------------------------------------------------
     //* ----------------------------------------------------------------------------------
 
     // main game loop

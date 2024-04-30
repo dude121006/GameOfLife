@@ -1,0 +1,20 @@
+[
+ {
+  "directory": "D:\\Krishanth\\Dev\\C++\\Projects\\GameOfLife",
+  "arguments": [
+   "g++",
+   "board.cpp",
+   "cell.cpp",
+   "main.cpp",
+   "-Isrc/include",
+   "-Iinclude",
+   "-Lsrc/lib",
+   "-lsfml-graphics",
+   "-lsfml-window",
+   "-lsfml-system",
+   "-o",
+   "bin/main"
+  ],
+  "file": "main.cpp"
+ }
+]
